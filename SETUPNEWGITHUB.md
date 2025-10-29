@@ -7,6 +7,7 @@ A beginner-friendly guide for learning x86-64 assembly on Linux.
 ## **Prerequisites — One-Time Setup**
 
 Install the assembler (NASM) and linker tools:
+Inside terminal(ctrl + j):
 
 ```bash
 sudo apt update
@@ -82,7 +83,8 @@ These are **required** for Linux x86-64 assembly programs:
 ## **Complete Workflow**
 
 ### **Step 1: Create the Assembly File**
-
+inside terminal, write this 
+after you write this, there will like a command interace na magpopop-up
 ```bash
 nano hello.asm
 ```
@@ -91,10 +93,31 @@ Or use VS Code: **File → New File → Save as `hello.asm`**
 
 ### **Step 2: Write Your Code**
 
-Copy the template above and customize the message.
+Copy the template below and paste in the command interface
+
+```asm
+section .data
+    msg db "Hello, World!", 0Ah   ; Your custom message here
+
+section .text
+    global _start
+
+_start:
+    mov rax, 1        ; sys_write (FIXED - syscall number)
+    mov rdi, 1        ; stdout (FIXED - file descriptor)
+    mov rsi, msg      ; FIXED - pointer to message
+    mov rdx, 14       ; CUSTOMIZABLE - message length
+    syscall           ; FIXED - invoke system call
+
+    mov rax, 60       ; sys_exit (FIXED - syscall number)
+    xor rdi, rdi      ; FIXED - exit code 0
+    syscall           ; FIXED - invoke system call
+```
+after u type/ paste them, do CTRL + O then ENTER.
+then do CTRL X
 
 ### **Step 3: Assemble (Convert .asm → .o)**
-
+after exiting the command interface, put this in the same terminal again
 ```bash
 nasm -f elf64 hello.asm -o hello.o
 ```
@@ -106,7 +129,7 @@ nasm -f elf64 hello.asm -o hello.o
 - `-o hello.o` → output object file (CUSTOMIZABLE filename)
 
 ### **Step 4: Link (Convert .o → executable)**
-
+put this also
 ```bash
 ld hello.o -o hello
 ```
